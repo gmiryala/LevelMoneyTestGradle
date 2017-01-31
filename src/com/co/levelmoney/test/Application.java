@@ -25,7 +25,7 @@ public class Application {
 	private static String[] arguments = null;
 	public static void main(String args[]) {
 		arguments = args;
-		SpringApplication.run(Application.class);
+		SpringApplication.run(Application.class,args);
 	}
 
 	@Bean

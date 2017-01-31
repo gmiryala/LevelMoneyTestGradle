@@ -22,6 +22,10 @@ public class JSONUtil {
 			sb.append(entry.getValue().toString());
 			sb.append(",");
 		}
+		if(sb.length() > 1)
+		{
+			sb.deleteCharAt(sb.length() - 1);
+		}
 		sb.append("}");
 		return sb.toString();
 	}
