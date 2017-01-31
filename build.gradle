@@ -1,0 +1,82 @@
+apply plugin: "java"
+apply plugin: "maven"
+
+
+group = "myorg"
+version = 1.0
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.4.RELEASE")
+    }
+}
+
+    repositories {
+        mavenCentral()
+    }
+
+sourceSets.all { set ->
+    def jarTask = task("${set.name}Jar", type: Jar) {
+        baseName = baseName + "-$set.name"
+        from set.output
+    }
+
+    artifacts {
+        archives jarTask
+    }
+}
+
+sourceSets {
+    api
+    impl
+}
+
+dependencies {
+    apiCompile 'commons-codec:commons-codec:1.5'
+
+    implCompile sourceSets.api.output
+    implCompile 'commons-lang:commons-lang:2.6'
+	
+	compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework:spring-web'
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile("com.fasterxml.jackson.core:jackson-databind")
+	compile 'com.google.code.gson:gson:2.8.0'
+ 	testCompile 'junit:junit:4.9'
+   // testCompile sourceSets.api.output
+    //testCompile sourceSets.impl.output
+    //runtime configurations.apiRuntime
+    //runtime configurations.implRuntime
+}
+
+apply plugin: 'org.springframework.boot'
+
+jar {
+    from sourceSets.api.output
+    from sourceSets.impl.output
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri("${buildDir}/repo"))
+
+            addFilter("main") { artifact, file -> artifact.name == project.name }
+            ["api", "impl"].each { type ->
+                addFilter(type) { artifact, file -> artifact.name.endsWith("-$type") }
+                
+                // We now have to map our configurations to the correct maven scope for each pom
+                ["compile", "runtime"].each { scope ->
+                    configuration = configurations[type + scope.capitalize()]
+                    ["main", type].each { pomName ->
+                        pom(pomName).scopeMappings.addMapping 1, configuration, scope
+                    }
+                }
+            }
+
+        }
+    }
+}
