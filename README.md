@@ -8,19 +8,19 @@ jar will be generated at build\distributions\
 
 Go to jar location execute commands
 
-1. For getting output for ALLTransactions
+Scenario 1: For getting output for ALLTransactions
 
 java -jar GopiLevelMoneyTest-1.0
 
-2. For excluding Donut transactions
+Scenario 2: For excluding Donut transactions
 
 java -jar GopiLevelMoneyTest-1.0 ignore-donuts
 
-3. For including projected transactions
+Scenario 3: For including projected transactions
 
 java -jar GopiLevelMoneyTest-1.0 crystal-ball
 
-4. For excluding Donut transactions and including projected transactions
+Scenario 4: For excluding Donut transactions and including projected transactions
 
 java -jar GopiLevelMoneyTest-1.0 crystal-ball ignore-donuts
 or
