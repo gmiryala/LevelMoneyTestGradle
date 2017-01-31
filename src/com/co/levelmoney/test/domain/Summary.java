@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Summary {
+
 	long spent;
 	
 	long income;
+
 
 	public long getSpent() {
 		return spent;
@@ -28,7 +30,7 @@ public class Summary {
 	
 	@Override
     public String toString() { 
-		return  "{\"spent:\"$" +RoundTo2Decimals(spent) +  "\",\"income\":\"$" +RoundTo2Decimals(income)+ "\"}";
+		return  "{\"spent:\"$" +RoundTo2Decimals(spent)*-1 +  "\",\"income\":\"$" +RoundTo2Decimals(income)+ "\"}";
 	}
 	
 	private double RoundTo2Decimals(long val) {

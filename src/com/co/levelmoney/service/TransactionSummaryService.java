@@ -1,6 +1,5 @@
 package com.co.levelmoney.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -8,10 +7,14 @@ import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.TreeMap;
 
-import com.co.levelmoney.test.domain.MonthSummary;
 import com.co.levelmoney.test.domain.Summary;
 import com.co.levelmoney.test.domain.Transaction;
 
+/**
+ * This class has functions to summarize transactions
+ * @author gmiryala
+ *
+ */
 public class TransactionSummaryService {
 
 	
@@ -93,55 +96,5 @@ public class TransactionSummaryService {
 		return summary;
 	}
 
-	
-	public List<MonthSummary> getMonthlySummary(List<Transaction> transactions){
 		
-		Map<String, MonthSummary> monthlyMap = new HashMap<>();
-		for (Transaction transaction : transactions)
-		{
-			addTransactiontoMonthlyMap(monthlyMap,transaction);
-		}
-		
-		return new ArrayList<MonthSummary>(monthlyMap.values());
-	}
-	
-	/**
-	 * 
-	 * @param monthlyMap
-	 * @param transaction
-	 */
-	private void addTransactiontoMonthlyMap(Map<String, MonthSummary> monthlyMap, Transaction transaction) {
-		String month = transaction.getTransaction_time().substring(0,7);
-		MonthSummary monthSummary = getMonthSummary(monthlyMap, month);
-		if(transaction.getAmount()<0)
-		{
-			monthSummary.getSummary().addSpent(transaction.getAmount());
-		}
-		else
-		{
-			monthSummary.getSummary().addIncome(transaction.getAmount());			
-		}
-		
-	}
-
-	private MonthSummary getMonthSummary(Map<String, MonthSummary> monthlyMap, String month) {
-		MonthSummary monthSummary = null;
-		Summary summary = null;
-		if(monthlyMap.containsKey(month))
-		{
-			monthSummary = monthlyMap.get(month);
-		} else
-		{
-			monthSummary = new MonthSummary();
-			monthSummary.setMonth(month);
-			summary = new Summary();
-			summary.setIncome(0);
-			summary.setSpent(0);
-			monthSummary.setSummary(summary);
-			
-			monthlyMap.put(month, monthSummary);
-		}
-		return monthSummary;
-	}
-	
 }
